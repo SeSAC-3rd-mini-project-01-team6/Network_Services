@@ -35,6 +35,9 @@ results/
 report_*.csv
 *.csv
 
+security_results/
+계정관리_*.txt
+
 # 프로젝트에서 자동 생성되는 시간 기반 리포트
 report_*.txt
 result_*.csv
@@ -79,8 +82,8 @@ pip-log.txt
 # -----------------------------
 config_local.py
 *.env
-*.sh
 generator/
+setup/aws_linux
 
 # -----------------------------
 # 테스트 파일
