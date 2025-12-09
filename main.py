@@ -35,17 +35,9 @@ def execute_modules(modules, fix_mode=False):
     for module in modules:
         try:
             output = module.run(fix_mode=fix_mode)
-            results.append({
-                "module": module.__name__,
-                "result": output,
-                "fixed": fix_mode
-            })
+            results.append(output)
         except Exception as e:
-            results.append({
-                "module": module.__name__,
-                "result": f"ERROR: {e}",
-                "fixed": fix_mode
-            })
+            results.append(f"{module} ERROR: {e}")
 
     log(f"모듈 실행 완료: {len(results)}개 모듈 처리됨")
     return results
@@ -56,7 +48,7 @@ def save_as_csv(results):
     os.makedirs(os.path.dirname(RESULT_CSV_PATH), exist_ok=True)
 
     with open(RESULT_CSV_PATH, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=["module", "result", "fixed"])
+        writer = csv.DictWriter(f, fieldnames=['점검 코드', '점검 항목', '점검 내용', '상태', '중요도', '발견 사항', '사용 명령어', '권고 사항'])
         writer.writeheader()
         writer.writerows(results)
 
@@ -65,7 +57,8 @@ def save_as_csv(results):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--fix", action="store_true", help="fix 모드 활성화")
+    # 실행할 때 추가: sudo python3 main.py --fix
+    parser.add_argument("--fix", action="store_true", help="권고 사항 적용")
     args = parser.parse_args()
 
     print("\n=== Module Loader ===")
